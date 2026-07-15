@@ -63,7 +63,7 @@
     "verify": "npm run format:check && npm run lint && npm run typecheck && npm test",
     "prepare": "npm run",
     "release": "npm run verify && npm version patch && git push && git push --tags && npm publish",
-    "prepublishOnly": "npm run verify && npm run build",
+    "prepublishOnly": "npm run build",
     "release:patch": "npm version patch",
     "release:minor": "npm version minor",
     "release:major": "npm version major",
