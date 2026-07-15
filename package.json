@@ -4,13 +4,13 @@
   "description": "Framework-agnostic core SDK for EduLearn microservices providing observability, configuration, logging, tracing, metrics, and common utilities.",
   "license": "MIT",
   "author": "Muhammed Shafeeque",
-  "homepage": "https://github.com/your-org/edulearn-core",
+  "homepage": "https://github.com/muhammed-shafeeque-th/edulearn-core",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/your-org/edulearn-core.git"
+    "url": "git+https://github.com/muhammed-shafeeque-th/edulearn-core.git"
   },
   "bugs": {
-    "url": "https://github.com/your-org/edulearn-core/issues"
+    "url": "https://github.com/muhammed-shafeeque-th/edulearn-core/issues"
   },
   "keywords": [
     "edulearn",
@@ -61,7 +61,7 @@
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage",
     "verify": "npm run format:check && npm run lint && npm run typecheck && npm test",
-    "prepare": "npm run build",
+    "prepare": "npm run",
     "release": "npm run verify && npm version patch && git push && git push --tags && npm publish",
     "prepublishOnly": "npm run verify && npm run build",
     "release:patch": "npm version patch",
