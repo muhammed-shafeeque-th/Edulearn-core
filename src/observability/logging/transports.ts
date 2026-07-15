@@ -1,8 +1,8 @@
 import winston from 'winston';
 // import DailyRotateFile from 'winston-daily-rotate-file';
-import { ObservabilityConfig } from '../config/observability.config';
+import { LoggerConfigs } from './types';
 
-export function createTransports(config: ObservabilityConfig) {
+export function createTransports(config: LoggerConfigs) {
   const transportsList: winston.transport[] = [
     new winston.transports.Console({
       handleExceptions: true,

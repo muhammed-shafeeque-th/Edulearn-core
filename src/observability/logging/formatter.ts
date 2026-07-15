@@ -1,7 +1,7 @@
 import winston from 'winston';
-import { ObservabilityConfig } from '../config/observability.config';
+import { LoggerConfigs } from './types';
 
-export function createFormatter(config: ObservabilityConfig) {
+export function createFormatter(config: LoggerConfigs) {
   if (config.environment === 'production') {
     return winston.format.json();
   }

@@ -11,3 +11,11 @@ export interface ILogger {
   error(message: string, error?: Error | unknown, context?: LogContext): void;
   debug(message: string, context?: LogContext): void;
 }
+
+export type LoggerConfigs = {
+  serviceName: string;
+  version: string;
+  environment: string;
+  level: string;
+  enableConsole: boolean;
+};
