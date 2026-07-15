@@ -1,0 +1,8 @@
+src/
+coverage/
+tests/
+.github/
+.vscode/
+node_modules/
+.env*
+*.log
