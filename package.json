@@ -1,0 +1,111 @@
+{
+  "name": "@edulearn/core",
+  "version": "1.0.0",
+  "description": "Framework-agnostic core SDK for EduLearn microservices providing observability, configuration, logging, tracing, metrics, and common utilities.",
+  "license": "MIT",
+  "author": "Muhammed Shafeeque",
+  "homepage": "https://github.com/your-org/edulearn-core",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/your-org/edulearn-core.git"
+  },
+  "bugs": {
+    "url": "https://github.com/your-org/edulearn-core/issues"
+  },
+  "keywords": [
+    "edulearn",
+    "sdk",
+    "core",
+    "microservices",
+    "typescript",
+    "grpc",
+    "observability",
+    "opentelemetry",
+    "prometheus",
+    "winston",
+    "logging",
+    "tracing",
+    "metrics",
+    "redis",
+    "kubernetes"
+  ],
+  "packageManager": "yarn@1.22.22",
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist",
+    "protos",
+    "README.md",
+    "LICENSE"
+  ],
+  "sideEffects": false,
+  "scripts": {
+    "clean": "rimraf dist",
+    "build": "npm run clean && tsc",
+    "watch": "tsc --watch",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint src --ext .ts",
+    "lint:fix": "eslint src --ext .ts --fix",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage",
+    "verify": "npm run format:check && npm run lint && npm run typecheck && npm test",
+    "prepare": "npm run build",
+    "release": "npm run verify && npm version patch && git push && git push --tags && npm publish",
+    "prepublishOnly": "npm run verify && npm run build",
+    "release:patch": "npm version patch",
+    "release:minor": "npm version minor",
+    "release:major": "npm version major",
+    "publish:public": "npm publish --access public"
+  },
+  "dependencies": {
+    "@opentelemetry/api": "^1.9.0",
+    "@opentelemetry/exporter-trace-otlp-http": "^0.220.0",
+    "@opentelemetry/instrumentation-grpc": "^0.220.0",
+    "@opentelemetry/instrumentation-http": "^0.220.0",
+    "@opentelemetry/instrumentation-ioredis": "^0.68.0",
+    "@opentelemetry/instrumentation-kafkajs": "^0.29.0",
+    "@opentelemetry/instrumentation-pg": "^0.72.0",
+    "@opentelemetry/instrumentation-winston": "^0.64.0",
+    "@opentelemetry/resources": "^2.1.0",
+    "@opentelemetry/sdk-trace-node": "^2.9.0",
+    "@opentelemetry/semantic-conventions": "^1.37.0",
+    "dotenv": "^17.2.2",
+    "ioredis": "^5",
+    "prom-client": "^15.1.3",
+    "winston": "^3.18.3"
+  },
+  "devDependencies": {
+    "@types/node": "^24.3.0",
+    "jest": "^30.0.5",
+    "rimraf": "^6.0.1",
+    "typescript": "^5.9.2"
+  },
+  "peerDependencies": {
+    "@opentelemetry/instrumentation-pg": "^0.72.0",
+    "ioredis": "^5",
+    "pg": "^8"
+  },
+  "peerDependenciesMeta": {
+    "pg": {
+      "optional": true
+    },
+    "ioredis": {
+      "optional": true
+    },
+    "@opentelemetry/instrumentation-pg": {
+      "optional": true
+    }
+  }
+}
