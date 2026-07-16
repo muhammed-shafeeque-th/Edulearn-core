@@ -1,3 +1,5 @@
+import { LoggerOptions } from "winston";
+
 export interface LogContext {
   [key: string]: any;
   userId?: string;
@@ -14,8 +16,9 @@ export interface ILogger {
 
 export type LoggerConfigs = {
   serviceName: string;
-  version: string;
+  version?: string;
   environment: string;
   level: string;
-  enableConsole: boolean;
+  enableConsole?: boolean;
+  loggerOptions?: LoggerOptions;
 };

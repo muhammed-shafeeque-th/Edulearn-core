@@ -1,12 +1,13 @@
-import winston from 'winston';
+import winston from "winston";
 // import DailyRotateFile from 'winston-daily-rotate-file';
-import { LoggerConfigs } from './types';
+import { LoggerConfigs } from "./types";
 
 export function createTransports(config: LoggerConfigs) {
   const transportsList: winston.transport[] = [
     new winston.transports.Console({
       handleExceptions: true,
     }),
+
   ];
 
   // transportsList.push(
