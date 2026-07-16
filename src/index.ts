@@ -26,7 +26,9 @@ export function getProtoPath(service: ServiceName, fileName?: string): string {
 
 export * from "./events";
 export * from "./redis";
+export * from "./health";
 export * from "./utils/getEnv";
+export * from "./utils/get-metadata";
 export * from "./observability/logging";
 export * from "./observability/metrics";
 export * from "./observability/trace";
