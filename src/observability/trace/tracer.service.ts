@@ -10,14 +10,12 @@ import {
 } from "@opentelemetry/api";
 import { ITraceService } from "./trace.interface";
 
-export const TRACER_TOKEN = Symbol.for("Tracer");
-
 export class TracerService implements ITraceService {
   constructor(private readonly tracer: Tracer) {}
 
   async startActiveSpan<T>(
     name: string,
-    fn: () => Promise<T>,
+    fn: (span: Span) => Promise<T>,
     attributes?: Attributes,
   ): Promise<T> {
     return this.tracer.startActiveSpan(name, async (span) => {
@@ -26,7 +24,7 @@ export class TracerService implements ITraceService {
       }
 
       try {
-        const result = await fn();
+        const result = await fn(span);
         span.setStatus({ code: SpanStatusCode.OK });
         return result;
       } catch (error: unknown) {
@@ -52,6 +50,13 @@ export class TracerService implements ITraceService {
   }
 
   recordError(span: Span, error: unknown): void {
+    span.recordException(error as Error);
+    span.setStatus({
+      code: SpanStatusCode.ERROR,
+      message: (error as Error)?.message || "Operation failed",
+    });
+  }
+  recordException(span: Span, error: unknown): void {
     span.recordException(error as Error);
     span.setStatus({
       code: SpanStatusCode.ERROR,
