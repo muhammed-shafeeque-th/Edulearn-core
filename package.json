@@ -1,6 +1,6 @@
 {
   "name": "@edulearn/core",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Framework-agnostic core SDK for EduLearn microservices providing observability, configuration, logging, tracing, metrics, and common utilities.",
   "license": "MIT",
   "author": "Muhammed Shafeeque",
