@@ -4,4 +4,7 @@ export interface RedisConfig {
   db: number;
   keyPrefix: string;
   password?: string;
+  lazyConnect: boolean;
+  maxRetriesPerRequest: number;
+  //  retryStrategy: (retry :number) => void
 }

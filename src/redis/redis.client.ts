@@ -1,15 +1,14 @@
-import Redis, { ChainableCommander } from 'ioredis';
-import { ICacheService } from './cache.interface';
-import { RedisConfig } from './redis.config';
+import Redis, { ChainableCommander } from "ioredis";
+import { ICacheService } from "./cache.interface";
+import { RedisConfig } from "./redis.config";
 
 export class RedisClient implements ICacheService {
   private readonly client: Redis;
 
   constructor(config: RedisConfig) {
-    this.client = new Redis(config.port, config.host, {
-      ...(config.password && { password: config.password }),
-      db: config.db,
-      keyPrefix: config.keyPrefix,
+    const { port, host, ...redisOptions } = config;
+    this.client = new Redis(port, host, {
+      ...redisOptions,
       enableOfflineQueue: false,
       retryStrategy: (retries: number) => {
         if (retries > 5) return null;
@@ -21,16 +20,18 @@ export class RedisClient implements ICacheService {
   }
 
   private setupEventListeners(): void {
-    this.client.on('error', (err) => {
-      console.error('Redis Client Error:', err);
+    this.client.on("error", (err) => {
+      console.error("Redis Client Error:", err);
     });
 
-    this.client.on('connect', () => {
-      console.info(`Redis connected to ${this.client.options.host}:${this.client.options.port}`);
+    this.client.on("connect", () => {
+      console.info(
+        `Redis connected to ${this.client.options.host}:${this.client.options.port}`,
+      );
     });
 
-    this.client.on('ready', () => {
-      console.info('Redis is ready');
+    this.client.on("ready", () => {
+      console.info("Redis is ready");
     });
   }
 
@@ -39,13 +40,13 @@ export class RedisClient implements ICacheService {
   }
 
   async connect(): Promise<void> {
-    if (this.client.status !== 'ready') {
+    if (this.client.status !== "ready") {
       await this.client.connect();
     }
   }
 
   async disconnect(): Promise<void> {
-    if (this.client.status !== 'end') {
+    if (this.client.status !== "end") {
       await this.client.quit();
     }
   }
@@ -68,7 +69,8 @@ export class RedisClient implements ICacheService {
   }
 
   async set<T>(key: string, value: T, ttl?: number): Promise<void> {
-    const stringValue = typeof value === 'string' ? value : JSON.stringify(value);
+    const stringValue =
+      typeof value === "string" ? value : JSON.stringify(value);
 
     if (ttl !== undefined) {
       await this.client.setex(key, ttl, stringValue);
@@ -99,13 +101,16 @@ export class RedisClient implements ICacheService {
     });
   }
 
-  async setMultiple<T>(entries: { key: string; value: T }[], ttl?: number): Promise<void> {
+  async setMultiple<T>(
+    entries: { key: string; value: T }[],
+    ttl?: number,
+  ): Promise<void> {
     if (!entries?.length) return;
 
     const pipeline: ChainableCommander = this.client.pipeline();
 
     for (const { key, value } of entries) {
-      if (typeof key !== 'string' || value === undefined) continue;
+      if (typeof key !== "string" || value === undefined) continue;
       const stringValue = JSON.stringify(value);
       if (ttl !== undefined && ttl > 0) {
         pipeline.setex(key, ttl, stringValue);
@@ -161,14 +166,14 @@ export class RedisClient implements ICacheService {
     await subscriber.connect();
 
     await subscriber.subscribe(channel);
-    subscriber.on('message', onMessage);
+    subscriber.on("message", onMessage);
 
     return async () => {
       try {
         await subscriber.unsubscribe(channel);
         await subscriber.quit();
       } catch (err) {
-        console.error('Error during unsubscribe:', err);
+        console.error("Error during unsubscribe:", err);
       }
     };
   }
