@@ -1,17 +1,18 @@
-import { PgInstrumentation } from '@opentelemetry/instrumentation-pg';
-import { HttpInstrumentation } from '@opentelemetry/instrumentation-http';
-import { KafkaJsInstrumentation } from '@opentelemetry/instrumentation-kafkajs';
-import { IORedisInstrumentation } from '@opentelemetry/instrumentation-ioredis';
-import { GrpcInstrumentation } from '@opentelemetry/instrumentation-grpc';
-import { TracerConfig } from '../trace.config';
+import { PgInstrumentation } from "@opentelemetry/instrumentation-pg";
+import { HttpInstrumentation } from "@opentelemetry/instrumentation-http";
+import { KafkaJsInstrumentation } from "@opentelemetry/instrumentation-kafkajs";
+import { IORedisInstrumentation } from "@opentelemetry/instrumentation-ioredis";
+import { GrpcInstrumentation } from "@opentelemetry/instrumentation-grpc";
+import { TracerConfig } from "../trace.config";
+import { Instrumentation } from "@opentelemetry/instrumentation";
 
-export function getInstrumentations(config: TracerConfig) {
+export function getInstrumentations(config: TracerConfig): Instrumentation[] {
   return [
     new HttpInstrumentation({
       // Example hooks - customize as needed
       requestHook: (span, request: any) => {
-        if (request.headers?.['user-agent']) {
-          span.setAttribute('http.user_agent', request.headers['user-agent']);
+        if (request.headers?.["user-agent"]) {
+          span.setAttribute("http.user_agent", request.headers["user-agent"]);
         }
       },
     }),
@@ -23,5 +24,6 @@ export function getInstrumentations(config: TracerConfig) {
     }),
     new IORedisInstrumentation(),
     new GrpcInstrumentation(),
+    ...(config.instrumentations ?? []),
   ];
 }
