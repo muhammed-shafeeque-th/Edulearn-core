@@ -4,7 +4,7 @@ import { ObservabilityConfig } from "../config/observability.config";
 import { getCurrentTraceContext } from "../common/context";
 
 export class LoggerService implements ILogger {
-  constructor(private readonly logger: winston.Logger) {}
+  constructor(protected readonly logger: winston.Logger) {}
 
   private enrichMeta(meta?: any) {
     const traceCtx = getCurrentTraceContext();
