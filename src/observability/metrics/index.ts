@@ -1,5 +1,6 @@
 export * from "./metric.factory"
 export * from "./metric.interface"
 export * from "./metric.service"
+export * from "./server/metrics.server"
 export * from "./registry"
 export * from "./types"
