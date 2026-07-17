@@ -1,5 +1,5 @@
-export * from "./interfaces"
+export * from "./types"
+export * from "./metric.interface"
 export * from "./create.metrics"
 export * from "./metrics.config"
-export * from "./types"
 export * from "./register"
