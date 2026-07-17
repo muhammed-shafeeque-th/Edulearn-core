@@ -1,11 +1,11 @@
 import Redis, { ChainableCommander } from "ioredis";
 import { ICacheService } from "./cache.interface";
-import { RedisConfig } from "./redis.config";
+import { CacheConfig } from "./cache.config";
 
-export class RedisClient implements ICacheService {
+export class CacheClient implements ICacheService {
   private readonly client: Redis;
 
-  constructor(config: RedisConfig) {
+  constructor(config: CacheConfig) {
     const { port, host, ...redisOptions } = config;
     this.client = new Redis(port, host, {
       ...redisOptions,

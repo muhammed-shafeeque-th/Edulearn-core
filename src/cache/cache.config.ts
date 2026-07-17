@@ -1,4 +1,4 @@
-export interface RedisConfig {
+export interface CacheConfig {
   host: string;
   port: number;
   db: number;
