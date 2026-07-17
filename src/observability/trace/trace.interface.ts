@@ -1,31 +1,31 @@
-import { Attributes, Span, SpanStatusCode, Context } from '@opentelemetry/api';
+import { TAttributes, TContext, TSpan, TSpanStatusCode } from "./types/tracer.types";
 
 export interface ITraceService {
   startActiveSpan<T>(
     name: string,
     fn: () => Promise<T>,
-    attributes?: Attributes,
+    attributes?: TAttributes,
   ): Promise<T>;
 
   startSpan(
     name: string,
-    attributes?: Attributes,
-    contextOverride?: Context,
-  ): Span;
+    attributes?: TAttributes,
+    contextOverride?: TContext,
+  ): TSpan;
 
-  endSpan(span: Span): void;
+  endSpan(span: TSpan): void;
 
-  recordError(span: Span, error: unknown): void;
+  recordError(span: TSpan, error: unknown): void;
 
-  setStatus(span: Span, code: SpanStatusCode, message?: string): void;
+  setStatus(span: TSpan, code: TSpanStatusCode, message?: string): void;
 
-  setAttribute(span: Span, key: string, value: unknown): void;
+  setAttribute(span: TSpan, key: string, value: unknown): void;
 
-  getCurrentSpan(): Span | undefined;
+  getCurrentSpan(): TSpan | undefined;
 
   getTraceId(): string | undefined;
 
   getSpanId(): string | undefined;
 
-  addEvent(name: string, attributes?: Attributes): void;
+  addEvent(name: string, attributes?: TAttributes): void;
 }

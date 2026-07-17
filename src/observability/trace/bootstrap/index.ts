@@ -1,5 +1,2 @@
-export * from "./instrumentations"
-export * from "./provider"
-export * from "./resource"
-export * from "./sampler"
-export * from "./shutdown"
+export { initializeTracer } from "./provider";
+export { registerShutdown, shutdownTracer } from "./shutdown";

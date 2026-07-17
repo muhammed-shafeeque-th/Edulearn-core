@@ -1,4 +1,4 @@
-import { BatchSpanProcessor, NodeTracerProvider, SimpleSpanProcessor } from "@opentelemetry/sdk-trace-node";
+import { BatchSpanProcessor,  NodeTracerProvider,  SimpleSpanProcessor } from "@opentelemetry/sdk-trace-node";
 import { registerInstrumentations } from "@opentelemetry/instrumentation";
 import { W3CTraceContextPropagator } from "@opentelemetry/core";
 import { createResource } from "./resource";
@@ -7,8 +7,9 @@ import { createSampler } from "./sampler";
 import { getInstrumentations } from "./instrumentations";
 import { registerShutdown } from "./shutdown";
 import { TracerConfig } from "../trace.config";
+import { TNodeTracerProvider } from "../types/tracer.types";
 
-export function initializeTracer(config: TracerConfig) {
+export function initializeTracer(config: TracerConfig): TNodeTracerProvider {
   const provider = createTracerProvider(config);
   registerInstrumentations({ instrumentations: getInstrumentations(config) });
   provider.register({

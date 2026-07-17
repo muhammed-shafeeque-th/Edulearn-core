@@ -1,4 +1,4 @@
-import { Instrumentation } from "@opentelemetry/instrumentation";
+import { TInstrumentation } from "./types/instrumentation.type";
 
 export interface TracerConfig {
   serviceName: string;
@@ -6,5 +6,5 @@ export interface TracerConfig {
   samplingRatio?: number;
   collectorUrl?: string;
   environment: string;
-  instrumentations?: Instrumentation[];
+  instrumentations?: TInstrumentation[];
 }
