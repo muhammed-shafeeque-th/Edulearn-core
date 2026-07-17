@@ -1,5 +1,5 @@
 import winston from 'winston';
-import { LoggerConfigs } from './types';
+import { LoggerConfigs } from '../logger.config';
 
 export function createFormatter(config: LoggerConfigs) {
   if (config.environment === 'production') {

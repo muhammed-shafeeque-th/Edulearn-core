@@ -2,12 +2,13 @@ import winston, { format, transports } from "winston";
 import { createCorrelationEnricher } from "./correlation";
 import { createFormatter } from "./formatter";
 import { createTransports } from "./transports";
-import { DEFAULT_LOGGER_CONFIG } from "../config/defaults";
-import { LoggerConfigs } from "./types";
+import { DEFAULT_LOGGER_CONFIG } from "../../config/defaults";
+import { LoggerConfigs } from "../logger.config";
+import { TLogger } from "../types";
 
 export function createLogger(
   config: Partial<LoggerConfigs> = {},
-): winston.Logger {
+): TLogger {
   const finalConfig = { ...DEFAULT_LOGGER_CONFIG, ...config };
 
   const logger = winston.createLogger({
@@ -26,7 +27,7 @@ export function createLogger(
 }
 
 // Graceful shutdown for transports (important for batching)
-export const shutdownLogger = async (logger: winston.Logger) => {
+export const shutdownLogger = async (logger: TLogger) => {
   console.log('Flushing logs before shutdown...');
   // Allow time for batching transports to flush
   await new Promise((resolve) => setTimeout(resolve, 1000)); // Wait for batching to complete
