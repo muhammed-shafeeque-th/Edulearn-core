@@ -2,6 +2,10 @@
 # Edit at https://www.toptal.com/developers/gitignore?templates=node
 
 ### Node ###
+
+# Custom
+**/_*/**
+
 # Logs
 logs
 *.log
