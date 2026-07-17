@@ -1,22 +1,18 @@
 import { createServer, Server } from "node:http";
-import { globalRegistry } from "../registry";
-
-export interface MetricsServerOptions {
-  port?: number;
-  endpoint?: string;
-}
+import { MetricsConfigs } from "../metrics.config";
+import { MetricService } from "../register/prom-metric.service";
 
 export class MetricsServer {
   private readonly port: number;
-  private readonly endpoint: string;
+  private readonly path: string;
   private server?: Server;
 
-  constructor({
-    port = 9090,
-    endpoint = "/metrics",
-  }: MetricsServerOptions = {}) {
+  constructor(
+    private readonly metricsService: MetricService,
+    { port = 9090, path = "/metrics" }: MetricsConfigs = {},
+  ) {
     this.port = port;
-    this.endpoint = endpoint;
+    this.path = path;
   }
 
   public async start(): Promise<void> {
@@ -35,7 +31,7 @@ export class MetricsServer {
           return;
         }
 
-        if (req.url !== this.endpoint) {
+        if (req.url !== this.path) {
           res.writeHead(404, {
             "Content-Type": "text/plain",
           });
@@ -44,10 +40,10 @@ export class MetricsServer {
           return;
         }
 
-        const metrics = await globalRegistry.metrics();
+        const metrics = await this.metricsService.metrics();
 
         res.writeHead(200, {
-          "Content-Type": globalRegistry.contentType,
+          "Content-Type": this.metricsService.contentType(),
         });
 
         res.end(metrics);
@@ -67,7 +63,7 @@ export class MetricsServer {
     });
 
     console.info(
-      `[metrics] Prometheus metrics available at ${this.port}${this.endpoint}`
+      `[metrics] Prometheus metrics available at ${this.port}${this.path}`,
     );
   }
 
