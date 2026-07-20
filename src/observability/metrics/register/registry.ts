@@ -24,17 +24,13 @@ export class MetricRegistry {
 
   private readonly summaries = new Map<string, Summary>();
 
-  constructor(
-    private readonly config: MetricsConfigs = {},
-  ) {
+  constructor(private readonly config: MetricsConfigs = {}) {
     this.initialize();
   }
 
   private initialize(): void {
     if (this.config.defaultLabels) {
-      this.registry.setDefaultLabels(
-        this.config.defaultLabels,
-      );
+      this.registry.setDefaultLabels(this.config.defaultLabels);
     }
 
     if (this.config.defaultMetrics?.enabled !== false) {
@@ -57,9 +53,7 @@ export class MetricRegistry {
     return this.registry.contentType;
   }
 
-  counter(
-    options: CounterConfiguration<string>,
-  ): Counter {
+  counter(options: CounterConfiguration<string>): Counter {
     const existing = this.counters.get(options.name);
 
     if (existing) {
@@ -68,6 +62,7 @@ export class MetricRegistry {
 
     const counter = new Counter({
       ...options,
+      name: this._sanitizeMetricName(options.name),
       registers: [this.registry],
     });
 
@@ -76,9 +71,7 @@ export class MetricRegistry {
     return counter;
   }
 
-  gauge(
-    options: GaugeConfiguration<string>,
-  ): Gauge {
+  gauge(options: GaugeConfiguration<string>): Gauge {
     const existing = this.gauges.get(options.name);
 
     if (existing) {
@@ -87,6 +80,8 @@ export class MetricRegistry {
 
     const gauge = new Gauge({
       ...options,
+      name: this._sanitizeMetricName(options.name),
+
       registers: [this.registry],
     });
 
@@ -95,9 +90,7 @@ export class MetricRegistry {
     return gauge;
   }
 
-  histogram(
-    options: HistogramConfiguration<string>,
-  ): Histogram {
+  histogram(options: HistogramConfiguration<string>): Histogram {
     const existing = this.histograms.get(options.name);
 
     if (existing) {
@@ -106,20 +99,17 @@ export class MetricRegistry {
 
     const histogram = new Histogram({
       ...options,
+      name: this._sanitizeMetricName(options.name),
+
       registers: [this.registry],
     });
 
-    this.histograms.set(
-      options.name,
-      histogram,
-    );
+    this.histograms.set(options.name, histogram);
 
     return histogram;
   }
 
-  summary(
-    options: SummaryConfiguration<string>,
-  ): Summary {
+  summary(options: SummaryConfiguration<string>): Summary {
     const existing = this.summaries.get(options.name);
 
     if (existing) {
@@ -128,13 +118,12 @@ export class MetricRegistry {
 
     const summary = new Summary({
       ...options,
+      name: this._sanitizeMetricName(options.name),
+
       registers: [this.registry],
     });
 
-    this.summaries.set(
-      options.name,
-      summary,
-    );
+    this.summaries.set(options.name, summary);
 
     return summary;
   }
@@ -149,6 +138,14 @@ export class MetricRegistry {
     this.histograms.clear();
 
     this.summaries.clear();
+  }
+
+  _sanitizeMetricName(value: string): string {
+    return value
+      .replace(/-/g, "_")
+      .replace(/\./g, "_")
+      .replace(/\s+/g, "_")
+      .replace(/[^a-zA-Z0-9_:]/g, "_");
   }
 }
 
