@@ -29,6 +29,7 @@ export * from "./cache";
 export * from "./health";
 export * from "./utils/getEnv";
 export * from "./utils/get-metadata";
+export * from "./utils/retryable";
 export * from "./observability/logging";
 export * from "./observability/metrics";
 export * from "./observability/trace";
